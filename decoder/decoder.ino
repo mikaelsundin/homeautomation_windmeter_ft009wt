@@ -4,17 +4,15 @@
 #include <stdint.h>
 #include "RF433recv.h"
 
-
+//Important that the pin is INT inpterrupt pin. 
+// D2 or D3 on Arduino Nano. 
 #define PIN_RFINPUT  2
-
-
 
 RF_manager rf(PIN_RFINPUT);
 
-
+//Write content of a packet as raw data.
 void callback(const BitVector *recorded) {
     Serial.print(F("Code received: "));
-    //char *printed_code = recorded->to_str();
 
     byte len = recorded->get_nb_bytes();
 
@@ -34,16 +32,6 @@ void callback(const BitVector *recorded) {
     }
     Serial.print(F("]\n"));
 
-    /*
-    if (printed_code) {
-        Serial.print(recorded->get_nb_bits());
-        Serial.print(F(" bits: ["));
-        Serial.print(printed_code);
-        Serial.print(F("]\n"));
-
-        free(printed_code);
-    }
-    */
 }
 
 extern uint8_t crc8_calc(const uint8_t *data, const uint16_t Length);
@@ -121,7 +109,6 @@ void decode_windmeter(const BitVector *recorded) {
 // the setup function runs once when you press reset or power the board
 void setup() {
     pinMode(PIN_RFINPUT, INPUT);
-    pinMode(3, OUTPUT);
 
     Serial.begin(115200);
 
